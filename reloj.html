@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title id="titulo">Reloj y fecha</title>
+    <link rel="icon" href="C:\Users\USUARIO\Desktop\reloj final\icono\favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Comic Sans MS, arial;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .reloj-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: -30px;
+        }
+
+        .reloj {
+            font-size: 140px;
+            margin: 0 5px;
+        }
+
+        .fila {
+            font-size: 70px;
+            margin-bottom: 0px;
+        }
+
+        .titulo {
+            font-size: 0px;
+            margin-bottom: 0px;
+        }
+
+        .separador {
+            border-bottom: 5px black;
+            margin: 10px 0;
+            padding-bottom: 80px;
+        }
+    </style>
+</head>
+<body>
+
+‎    <div class="separador"></div>
+‎ ‎
+    <div class="reloj-container">
+        <div class="reloj" id="reloj-24"></div>
+        <div class="reloj">/</div>
+        <div class="reloj" id="reloj-12"></div>
+    </div>
+    <div class="fila" id="fecha"></div>
+
+    <div class="separador"></div>
+    <div class="separador"></div>
+    <div class="separador"></div>
+    <div class="separador"></div>
+
+    <div class="fila" id="horas-restantes"></div>
+‎ 
+    <div class="fila" id="ano-actual"></div>
+‎ 
+    <div class="fila" id="dia-semana"></div>
+    <div class="fila" id="dia-semana-numero"></div>
+    <div class="fila" id="dia-mes-numero"></div>
+    <div class="fila" id="dia-ano-numero"></div>
+    <div class="fila" id="dias-restantes"></div>
+‎ 
+    <div class="fila" id="inicio-semana"></div>
+    <div class="fila" id="semana-ano"></div>
+‎ 
+    <div class="fila" id="mes-ano"></div>
+
+    <script>
+        function mostrarRelojYFecha() {
+            var fecha = new Date();
+            var hora24 = fecha.getHours();
+            var minutos = fecha.getMinutes();
+            var hora12 = (hora24 % 12) || 12;
+            var ampm = (hora24 >= 12) ? "PM" : "AM";
+
+            var reloj24 = document.getElementById("reloj-24");
+            reloj24.innerHTML = (hora24 < 10 ? "0" + hora24 : hora24) + ":" + (minutos < 10 ? "0" + minutos : minutos);
+
+            var reloj12 = document.getElementById("reloj-12");
+            reloj12.innerHTML = (hora12 < 10 ? "0" + hora12 : hora12) + ":" + (minutos < 10 ? "0" + minutos : minutos) + " " + ampm;
+
+            var diaSemana = fecha.toLocaleDateString(undefined, { weekday: 'long' });
+            var diaMes = fecha.getDate();
+            var mes = fecha.toLocaleDateString(undefined, { month: 'long' });
+            var ano = fecha.getFullYear();
+            var diaAno = Math.floor((fecha - new Date(fecha.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+            var diasRestantes = 365 - diaAno;
+            var inicioSemana = new Date(fecha.getFullYear(), 0, 1);
+            var semanaAno = Math.ceil((((fecha - inicioSemana) / 86400000) + inicioSemana.getDay() + 1) / 7);
+
+            document.getElementById("fecha").innerHTML = diaSemana + " " + diaMes + " de " + mes;
+            document.getElementById("horas-restantes").innerHTML = "Horas restantes: " + (24 - hora24 < 10 ? "0" + (24 - hora24) : (24 - hora24)) + ":" + (60 - minutos < 10 ? "0" + (60 - minutos) : (60 - minutos));
+            document.getElementById("ano-actual").innerHTML = "Año actual: " + ano;
+            document.getElementById("dia-semana").innerHTML = "Día de la semana: " + diaSemana + " - " + (fecha.getDay() + 1) + "/7";
+            document.getElementById("dia-mes-numero").innerHTML = "Día del mes: " + diaMes + "/" + new Date(fecha.getFullYear(), fecha.getMonth() + 1, 0).getDate();
+            document.getElementById("dia-ano-numero").innerHTML = "Día del año: " + diaAno + "/365";
+            document.getElementById("dias-restantes").innerHTML = "Días restantes: " + diasRestantes;
+            document.getElementById("inicio-semana").innerHTML = "Inicio de semana: domingo";
+            document.getElementById("semana-ano").innerHTML = "Semana del año: " + semanaAno + "/52";
+            document.getElementById("mes-ano").innerHTML = "Mes del año: " + mes + " - " + (fecha.getMonth() + 1) + "/12";
+            
+            document.getElementById("titulo").innerHTML = (hora12 < 10 ? "0" + hora12 : hora12) + ":" + (minutos < 10 ? "0" + minutos : minutos) + " " + ampm;
+
+            setTimeout(mostrarRelojYFecha, 1000);
+        }
+
+        mostrarRelojYFecha();
+    </script>
+</body>
+</html>
